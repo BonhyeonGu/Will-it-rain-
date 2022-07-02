@@ -1,5 +1,6 @@
 import pickle
 import os
+import numpy as np
 dir = './Ready/'
 dataTrain_xTEMP = []
 dataTrain_x = ["TRASH"]
@@ -60,6 +61,28 @@ for tempOne in dataTrain_xTEMP:
     frontId = nowId
     c += 1
 dataTrain_x.pop()
+
+print("\nNormalization")
+maxs = np.empty(34)
+mins = np.empty(34)
+maxs.fill(-1.0)
+mins.fill(np.Inf)
+c = 1
+for dataTrain_x_one in dataTrain_x:
+    print("\rProcess : Find max min : %.4f%%" % ((float(c) / (len(dataTrain_x))) * 100), end="")
+    for i in range(len(dataTrain_x_one)):
+        if maxs[i] < dataTrain_x_one[i]:
+            maxs[i] = dataTrain_x_one[i]
+        if mins[i] > dataTrain_x_one[i]:
+            mins[i] = dataTrain_x_one[i]
+    c += 1
+c = 1
+for dataTrain_x_one in dataTrain_x:
+    print("\rProcess : Normalization : %.4f%%" % ((float(c) / (len(dataTrain_x))) * 100), end="")
+    for i in range(len(dataTrain_x_one)):
+        dataTrain_x_one[i] = (dataTrain_x_one[i] - mins[i]) / (maxs[i] - mins[i])
+    c += 1
+            
 print("\nSave")
 with open("./dataTrain_x", "wb") as fw:
     pickle.dump(dataTrain_x, fw)
@@ -69,4 +92,6 @@ with open("./idToName", "wb") as fw:
     pickle.dump(idToName, fw)
 with open("./nameToId", "wb") as fw:
     pickle.dump(nameToId, fw)
+np.save("./maxs.npy", maxs)
+np.save("./mins.npy", mins)
 input("\nEnd")
