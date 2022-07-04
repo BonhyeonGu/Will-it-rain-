@@ -22,13 +22,13 @@
 
 경로 준비는 다음과 같습니다.  
 ./  
--ㄴReady  
---ㄴ2010.csv  
---ㄴ20......csv  
--ㄴtest.csv  
--ㄴ0_ready.py  
--ㄴ1_train.py  
--ㄴ2_test.py  
+ㄴReady/  
+-ㄴ2010.csv  
+-ㄴ20......csv  
+ㄴtest.csv  
+ㄴ0_ready.py  
+ㄴ1_train.py  
+ㄴ2_test.py  
 
 ## 실행
 
