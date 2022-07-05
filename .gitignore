@@ -1,3 +1,7 @@
 test.csv
 *.pth
 Ready/
+dataTrain_x
+mins.npy
+maxs.npy
+dataTrain_x

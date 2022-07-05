@@ -7,12 +7,14 @@ def loadTest():
     dataTest_xTEMP = []
     dataTest_x = ["TRASH"]
     dataTest_y = []
+    flags = []
     with open("./test.csv", "r") as fr:
         lines = fr.read().split('\n')
     for i in range(1, len(lines) - 1):
         print("\rProcess : %s : %.4f%%" % ("./test.csv", (float(i) / (len(lines) - 2)) * 100), end="")
         line = lines[i].split(',')
         data_one = [int(line[0]), int(line[2].split('-')[1])]
+        flags.append([line[0], line[2]])
         breakChain = False
         for j in range(3, 8):
             if line[j] == '':
@@ -51,7 +53,7 @@ def loadTest():
         for i in range(len(dataTest_x_one)):
             dataTest_x_one[i] = (dataTest_x_one[i] - mins[i]) / (maxs[i] - mins[i])
         c += 1
-    return dataTest_x, dataTest_y
+    return dataTest_x, dataTest_y, flags
 
 class MLP(nn.Module):
     def __init__(self):
@@ -71,12 +73,12 @@ class MLP(nn.Module):
 ok = 0
 model = MLP()
 model.load_state_dict(torch.load("mlp.pth"))
-x_test, y_test = loadTest()
+x_test, y_test, flags = loadTest()
 with torch.no_grad():
     model.eval()
     for i in range(0, len(x_test)):
         prediction = model(torch.FloatTensor([x_test[i]]))
-        print()
+        print(flags[i])
         print("예측 %f, 실제 %f"%(prediction, y_test[i][0]))
         if (prediction >= 0.5 and y_test[i][0] == 1.0) or (prediction < 0.5 and y_test[i][0] == 0.0):
             print("성공")
